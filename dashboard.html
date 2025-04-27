@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f7fa;
+        }
+        
+        /* Navbar Styles */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #2c3e50;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo-icon {
+            font-size: 28px;
+            color: #3498db;
+        }
+        
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .ball-icon {
+            color: #e74c3c;
+        }
+        
+        .delete-icon {
+            color: #f39c12;
+        }
+        
+        .user-icon {
+            color: #2ecc71;
+        }
+        
+        .date-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .calendar-icon {
+            color: #9b59b6;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #34495e;
+            color: white;
+            position: fixed;
+            height: 100%;
+            padding-top: 80px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+        
+        .sidebar-item {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: #2c3e50;
+            border-left: 4px solid #3498db;
+        }
+        
+        .sidebar-link i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            margin-top: 80px;
+            padding: 30px;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-title {
+            font-size: 24px;
+            color: #2c3e50;
+        }
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+        
+        .card-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .card-icon {
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 50%;
+        }
+        
+        .icon-blue {
+            background-color: #e1f0fa;
+            color: #3498db;
+        }
+        
+        .icon-green {
+            background-color: #e1f7ed;
+            color: #2ecc71;
+        }
+        
+        .icon-orange {
+            background-color: #fef2e5;
+            color: #f39c12;
+        }
+        
+        .icon-purple {
+            background-color: #f0e5f7;
+            color: #9b59b6;
+        }
+        
+        /* Professional Calendar Styles */
+        .calendar-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .calendar-nav {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .calendar-nav-btn {
+            background: #f5f7fa;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .calendar-nav-btn:hover {
+            background: #e1e5e9;
+        }
+        
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: 600;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+        
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        
+        .calendar-day {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .calendar-day:hover {
+            background: #f5f7fa;
+        }
+        
+        .current-day {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .current-day:hover {
+            background: #2980b9;
+        }
+        
+        .has-tasks {
+            position: relative;
+        }
+        
+        .has-tasks::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            width: 6px;
+            height: 6px;
+            background: #2ecc71;
+            border-radius: 50%;
+        }
+        
+        .other-month {
+            color: #bdc3c7;
+        }
+        
+        /* Task List Styles */
+        .task-list-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        .task-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .task-list-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .task-count {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .task-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .task-name {
+            font-weight: 500;
+        }
+        
+        .task-due {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        .task-priority {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .priority-high {
+            background: #ffecec;
+            color: #e74c3c;
+        }
+        
+        .priority-medium {
+            background: #fff8e6;
+            color: #f39c12;
+        }
+        
+        .priority-low {
+            background: #e6f7ed;
+            color: #2ecc71;
+        }
+        
+        .completed {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .main-content {
+                margin-left: 0;
+                padding-left: 280px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .main-content {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar-link span {
+                display: none;
+            }
+            
+            .sidebar-link i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            nav {
+                padding: 12px 15px;
+            }
+            
+            .logo {
+                font-size: 18px;
+            }
+            
+            .nav-icons {
+                gap: 15px;
+            }
+            
+            .date-text {
+                display: none;
+            }
+            
+            .calendar-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .calendar-nav {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav>
+        <div class="logo-container">
+            <i class="fas fa-tasks logo-icon"></i>
+            <span class="logo">Task Tracker</span>
+        </div>
+        
+        <div class="nav-icons">
+            <div class="date-container">
+                <i class="far fa-calendar-alt calendar-icon nav-icon"></i>
+                <span class="date-text">April 27, 2025</span>
+            </div>
+            
+            <i class="fas fa-basketball-ball ball-icon nav-icon"></i>
+            <i class="far fa-trash-alt delete-icon nav-icon"></i>
+            <a href="../login.html"><i class="far fa-user user-icon nav-icon"></i></a>
+        </div>
+    </nav>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="./profile.html" class="sidebar-link">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="./addtask.html" class="sidebar-link">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Task</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="../asset/tasktracker.html" class="sidebar-link">
+                    <i class="fas fa-tasks"></i>
+                    <span>Task Tracker</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="../asset/task.html" class="sidebar-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Show task</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Dashboard</h1>
+        </div>
+        
+        <div class="dashboard-cards">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Total Tasks</h3>
+                    <i class="fas fa-tasks card-icon icon-blue"></i>
+                </div>
+                <p class="card-value">128</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Completed</h3>
+                    <i class="fas fa-check-circle card-icon icon-green"></i>
+                </div>
+                <p class="card-value">84</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Pending</h3>
+                    <i class="fas fa-hourglass-half card-icon icon-orange"></i>
+                </div>
+                <p class="card-value">32</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Overdue</h3>
+                    <i class="fas fa-exclamation-circle card-icon icon-purple"></i>
+                </div>
+                <p class="card-value">12</p>
+            </div>
+        </div>
+        
+        <!-- Professional Calendar -->
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <h2 class="calendar-title">April 2025</h2>
+                <div class="calendar-nav">
+                    <button class="calendar-nav-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="calendar-nav-btn">Today</button>
+                    <button class="calendar-nav-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="calendar-weekdays">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+            
+            <div class="calendar-days">
+                <!-- Week 1 -->
+                <div class="calendar-day other-month">30</div>
+                <div class="calendar-day other-month">31</div>
+                <div class="calendar-day">1</div>
+                <div class="calendar-day">2</div>
+                <div class="calendar-day">3</div>
+                <div class="calendar-day">4</div>
+                <div class="calendar-day">5</div>
+                
+                <!-- Week 2 -->
+                <div class="calendar-day">6</div>
+                <div class="calendar-day">7</div>
+                <div class="calendar-day">8</div>
+                <div class="calendar-day">9</div>
+                <div class="calendar-day">10</div>
+                <div class="calendar-day">11</div>
+                <div class="calendar-day">12</div>
+                
+                <!-- Week 3 -->
+                <div class="calendar-day">13</div>
+                <div class="calendar-day">14</div>
+                <div class="calendar-day">15</div>
+                <div class="calendar-day">16</div>
+                <div class="calendar-day">17</div>
+                <div class="calendar-day">18</div>
+                <div class="calendar-day">19</div>
+                
+                <!-- Week 4 -->
+                <div class="calendar-day">20</div>
+                <div class="calendar-day">21</div>
+                <div class="calendar-day">22</div>
+                <div class="calendar-day">23</div>
+                <div class="calendar-day">24</div>
+                <div class="calendar-day">25</div>
+                <div class="calendar-day">26</div>
+                
+                <!-- Week 5 -->
+                <div class="calendar-day current-day has-tasks">27</div>
+                <div class="calendar-day has-tasks">28</div>
+                <div class="calendar-day">29</div>
+                <div class="calendar-day">30</div>
+                <div class="calendar-day other-month">1</div>
+                <div class="calendar-day other-month">2</div>
+                <div class="calendar-day other-month">3</div>
+            </div>
+        </div>
+        
+        <!-- Task List -->
+        <div class="task-list-container">
+            <div class="task-list-header">
+                <h2 class="task-list-title">Today's Tasks</h2>
+                <span class="task-count">3 tasks</span>
+            </div>
+            
+            <div class="task-item">
+                <div class="task-info">
+                    <input type="checkbox" class="task-checkbox">
+                    <span class="task-name">Complete project report</span>
+                </div>
+                <span class="task-priority priority-high">High</span>
+            </div>
+            
+            <div class="task-item">
+                <div class="task-info">
+                    <input type="checkbox" class="task-checkbox" checked>
+                    <span class="task-name completed">Team meeting</span>
+                </div>
+                <span class="task-priority priority-medium">Medium</span>
+            </div>
+            
+            <div class="task-item">
+                <div class="task-info">
+                    <input type="checkbox" class="task-checkbox">
+                    <span class="task-name">Review design mockups</span>
+                </div>
+                <span class="task-priority priority-low">Low</span>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // DOM Content Loaded Event
+document.addEventListener('DOMContentLoaded', function() {
+    // Set current date in the navigation
+    const dateElement = document.querySelector('.date-text');
+    const currentDate = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    dateElement.textContent = currentDate.toLocaleDateString('en-US', options);
+
+    // Calendar navigation functionality
+    const calendarNavLeft = document.querySelector('.calendar-nav-btn:first-child');
+    const calendarNavRight = document.querySelector('.calendar-nav-btn:last-child');
+    const calendarTodayBtn = document.querySelector('.calendar-nav-btn:nth-child(2)');
+    const calendarTitle = document.querySelector('.calendar-title');
+    
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+    
+    // Update calendar view
+    function updateCalendar() {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"];
+        calendarTitle.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+        
+        // Highlight current day
+        const days = document.querySelectorAll('.calendar-day:not(.other-month)');
+        days.forEach(day => {
+            day.classList.remove('current-day');
+            if (parseInt(day.textContent) === currentDate.getDate() && 
+                currentMonth === currentDate.getMonth() && 
+                currentYear === currentDate.getFullYear()) {
+                day.classList.add('current-day');
+            }
+        });
+    }
+    
+    // Calendar navigation events
+    calendarNavLeft.addEventListener('click', function() {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        updateCalendar();
+    });
+    
+    calendarNavRight.addEventListener('click', function() {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        updateCalendar();
+    });
+    
+    calendarTodayBtn.addEventListener('click', function() {
+        currentMonth = currentDate.getMonth();
+        currentYear = currentDate.getFullYear();
+        updateCalendar();
+    });
+    
+    // Task completion toggle
+    const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+    taskCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const taskName = this.nextElementSibling;
+            if (this.checked) {
+                taskName.classList.add('completed');
+            } else {
+                taskName.classList.remove('completed');
+            }
+            
+            // Update task counts (simplified - in a real app you would recalculate from data)
+            const completedValue = document.querySelector('.card-value:nth-child(2)');
+            const pendingValue = document.querySelector('.card-value:nth-child(3)');
+            
+            if (this.checked) {
+                completedValue.textContent = parseInt(completedValue.textContent) + 1;
+                pendingValue.textContent = parseInt(pendingValue.textContent) - 1;
+            } else {
+                completedValue.textContent = parseInt(completedValue.textContent) - 1;
+                pendingValue.textContent = parseInt(pendingValue.textContent) + 1;
+            }
+        });
+    });
+    
+    // Highlight days with tasks in calendar
+    const daysWithTasks = document.querySelectorAll('.has-tasks');
+    daysWithTasks.forEach(day => {
+        day.addEventListener('click', function() {
+            // In a real app, you would filter and show tasks for the selected date
+            alert(`Showing tasks for ${currentMonth + 1}/${this.textContent}/${currentYear}`);
+        });
+    });
+    
+    // Initialize calendar
+    updateCalendar();
+});
+        
+    </script>
+</body>
+</html>

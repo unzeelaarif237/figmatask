@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Doe | Professional Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./profile.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Professional Profile</h1>
+        </header>
+
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-pic-container">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe" class="profile-pic">
+                </div>
+                <h2>John Doe</h2>
+                <p>Senior Web Developer</p>
+                <p><i class="fas fa-map-marker-alt"></i> New York, USA</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-codepen"></i></a>
+                </div>
+            </div>
+            <div class="profile-body">
+                <div class="profile-section">
+                    <h3>About Me</h3>
+                    <p>Experienced web developer with 8+ years of expertise in building responsive, user-friendly websites and applications. Passionate about clean code and innovative solutions.</p>
+                </div>
+                <div class="profile-section">
+                    <h3>Contact Information</h3>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>john.doe@example.com</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+1 (555) 123-4567</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-globe"></i>
+                        <span>www.johndoe.dev</span>
+                    </div>
+                </div>
+                <div class="profile-section">
+                    <h3>Skills</h3>
+                    <div class="skills">
+                        <span class="skill">HTML5</span>
+                        <span class="skill">CSS3</span>
+                        <span class="skill">JavaScript</span>
+                        <span class="skill">React</span>
+                        <span class="skill">Node.js</span>
+                        <span class="skill">MongoDB</span>
+                        <span class="skill">Git</span>
+                        <span class="skill">Responsive Design</span>
+                        <span class="skill">Firebase</span>
+                    </div>
+                </div>
+                <div class="profile-section">
+                    <h3>Education</h3>
+                    <div class="info-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <strong>MSc Computer Science</strong>
+                            <p>Stanford University, 2015</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <strong>BSc Software Engineering</strong>
+                            <p>MIT, 2013</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <i class="fas fa-briefcase"></i>
+                <h4>Experience</h4>
+                <p>8+ Years</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-project-diagram"></i>
+                <h4>Projects</h4>
+                <p>120+</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-award"></i>
+                <h4>Awards</h4>
+                <p>15</p>
+            </div>
+        </div>
+
+        
+
+    <script src="./profile.js"></script>
+</body>
+</html>
