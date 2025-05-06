@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager | My Tasks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../asset/css/task.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>My Tasks</h1>
+                <div class="header-actions">
+                    <a href="addtask.html" class="icon-button">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="tasks-container">
+            <div class="tasks-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="work">Work</button>
+                <button class="filter-btn" data-filter="personal">Personal</button>
+                <button class="filter-btn" data-filter="shopping">Shopping</button>
+                <button class="filter-btn" data-filter="health">Health</button>
+            </div>
+
+            <div class="tasks-list" id="tasksList">
+                <!-- Tasks will be loaded here by JavaScript -->
+            </div>
+        </main>
+
+        <div class="notification" id="notification"></div>
+<a href="../asset/dashboard.html"><button>Go Back</button></a>
+    </div>
+
+    <script src="../asset/js/task.js"></script>
+</body>
+</html>
